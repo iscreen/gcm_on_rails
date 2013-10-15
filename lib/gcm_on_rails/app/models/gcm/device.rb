@@ -13,7 +13,9 @@ class Gcm::Device < Gcm::Base
 
   attr_accessible :registration_id
 
-  has_many :notifications, :class_name => 'Gcm::Notification', :dependent => :destroy
+  #has_many :notifications, :class_name => 'Gcm::Notification', :dependent => :destroy
+  has_many :notified_devices, :class_name => 'Gcm::NotifiedDevice', :dependent => :destroy
+  has_many :notifications, :class_name => 'Gcm::Notification', :through => :notified_devices, :dependent => :destroy
   validates_presence_of :registration_id
   validates_uniqueness_of :registration_id
 
