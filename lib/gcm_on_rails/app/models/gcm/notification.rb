@@ -60,8 +60,8 @@ class Gcm::Notification < Gcm::Base
 
             if response[:code] == 200
               if response[:message].nil?
-                # TODO - Making this assumption might not be right. HTTP status code 200 does not really signify s
-                logger.debug "response[:message].nil might not be right"uccess
+                # TODO - Making this assumption might not be right. HTTP status code 200 does not really signify success
+                logger.debug "response[:message].nil might not be right"
                 # if Gcm servers returned nil for the message
                 #      error = "success"
               elsif format == "json"
