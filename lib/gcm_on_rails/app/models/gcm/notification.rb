@@ -45,28 +45,34 @@ class Gcm::Notification < Gcm::Base
           notifications.each do |notification|
 
             logger.info "notification = #{notification.inspect}"
-            response = Gcm::Connection.send_notification(notification, api_key, format)
-            logger.info "response = #{response.inspect}"
 
+            registration_ids = []
+            devices = []
+            notification.devices.find_each do |device|
+              registration_ids.push device.registration_id
+              devices.push device
+            end
+
+            response = Gcm::Connection.send_notification(notification, api_key, format, registration_ids)
+            logger.info "response = #{response.insp
             # error handling
-            results = []
+            results = []ect}"
+
             if response[:code] == 200
               if response[:message].nil?
-                # TODO - Making this assumption might not be right. HTTP status code 200 does not really signify success
-                logger.debug "response[:message].nil might not be right"
+                # TODO - Making this assumption might not be right. HTTP status code 200 does not really signify s
+                logger.debug "response[:message].nil might not be right"uccess
                 # if Gcm servers returned nil for the message
-                #error = "success"
+          #      error = "success"
               elsif format == "json"
-                #error = ""
+          #      error = ""
                 message_data = JSON.parse response[:message]
                 success = message_data['success']
-                #error = message_data['results'][0]['error']  if success == 0
-                results = message_data['results']
+          #      error = message_data['results'][0]['error']  if succes
+                results = message_data['results']s == 0
               elsif format == "plain_text"   #format is plain text
                 message_data = response[:message]
                 error = response[:message].split('=')[1]
-              end
-
 
               results.zip(devices).each do |result, device|
                 error = result['error']
@@ -95,8 +101,10 @@ class Gcm::Notification < Gcm::Base
                 end
               end
               notification.sent_at = Time.now
-              notification.save!
+              notification.save! end
 
+
+           end
             elsif response[:code] == 401
               raise Gcm::Errors::InvalidAuthToken.new(message_data)
             elsif response[:code] == 503
