@@ -96,7 +96,7 @@ class Gcm::Notification < Gcm::Base
               end
               notification.sent_at = Time.now
               notification.save!
-              
+
             elsif response[:code] == 401
               raise Gcm::Errors::InvalidAuthToken.new(message_data)
             elsif response[:code] == 503
