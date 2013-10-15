@@ -69,7 +69,7 @@ class Gcm::Notification < Gcm::Base
                 message_data = JSON.parse response[:message]
                 success = message_data['success']
                 #      error = message_data['results'][0]['error']  if succes
-                results = message_data['results'] == 0
+                results = message_data['results']
               elsif format == "plain_text"   #format is plain text
                 message_data = response[:message]
                 error = response[:message].split('=')[1]
