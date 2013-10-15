@@ -54,9 +54,9 @@ class Gcm::Notification < Gcm::Base
             end
 
             response = Gcm::Connection.send_notification(notification, api_key, format, registration_ids)
-            logger.info "response = #{response.insp
+            logger.info "response = #{response.inspect}"
             # error handling
-            results = []ect}"
+            results = []
 
             if response[:code] == 200
               if response[:message].nil?
@@ -69,7 +69,7 @@ class Gcm::Notification < Gcm::Base
                 message_data = JSON.parse response[:message]
                 success = message_data['success']
                 #      error = message_data['results'][0]['error']  if succes
-                results = message_data['results']s == 0
+                results = message_data['results'] == 0
               elsif format == "plain_text"   #format is plain text
                 message_data = response[:message]
                 error = response[:message].split('=')[1]
